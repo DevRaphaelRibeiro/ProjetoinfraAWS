@@ -88,7 +88,7 @@ resource "aws_elb"  "web" {
   name  = "terraform-example-elb"
   availability_zones = ["sa-east-1a", "sa-east-1b", "sa-east-1c"]
 
-  
+    
   listener  {
     instance_port = 8000
     instance_protocol = "http"
