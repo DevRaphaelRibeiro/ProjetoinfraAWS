@@ -86,41 +86,48 @@ resource  "aws_security_group"  "default" {
 # Create ELB
 resource "aws_elb"  "web" {
   name  = "terraform-example-elb"
+  availability_zones = ["sa-east-1a", "sa-east-1b", "sa-east-1c"]
 
-  subnets = [aws_subnet.default.id]
-  security_groups = [aws_security_group.elb.id]
-  instances  = [aws_instance.web.id]
-
+  
   listener  {
-    instance_port = 80
+    instance_port = 8000
     instance_protocol = "http"
     lb_port = 80
     lb_protocol = "http"
   }
+  /*listener {
+    instance_port      = 8000
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = ""
+  }*/
+
+    health_check {
+      healthy_threshold   = 2
+      unhealthy_threshold = 2
+      timeout             = 3
+      target              = "HTTP:8000/"
+      interval            = 30
+
+    
+  }  
+  instances                   = [aws_instance.web.id]
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = {
+    Name = "terraform-example-elb"
+  }
 }
 
-
 # Create Instancia EC2
-resource  "aws_instance"  "web" {
-  
+resource "aws_instance" "web" {
+    ami = "ami-054a31f1b3bf90920"
+    instance_type = "t2.micro"
     
-
-
-  connection  {
-    type  = "ssh"
-    user  = "ubuntu"
-    host  = self.public_ip
-  }
-  instance_type = "t2.micro"
-
-  ami = var.aws_amis[var.aws_region]
-
-  
-
-  vpc_security_group_ids  = [aws_security_group.default.id] 
-  
-  subnet_id = aws_subnet.default.id
-
 }
 
 
