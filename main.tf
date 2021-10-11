@@ -25,7 +25,7 @@ resource  "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 }
 
-# Create rotas
+# Create routes
 resource "aws_route" "internet_access"{
   route_table_id  = aws_vpc.default.main_route_table_id
   destination_cidr_block  = "0.0.0.0/0"
