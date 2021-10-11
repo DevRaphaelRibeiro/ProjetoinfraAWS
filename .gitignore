@@ -1,2 +1,4 @@
 *.pem
 *.terraform
+terraform-aws
+terraform-aws.pub
