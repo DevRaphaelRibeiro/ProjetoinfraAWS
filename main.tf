@@ -15,85 +15,85 @@ provider "aws" {
 
 }
 # Create VPC
-resource "aws_vpc"  "default" {
+resource "aws_vpc" "default" {
   cidr_block = "10.0.0.0/16"
 
 }
 
 # Create Internet Gateway
-resource  "aws_internet_gateway" "default" {
+resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 }
 
 # Create routes
-resource "aws_route" "internet_access"{
-  route_table_id  = aws_vpc.default.main_route_table_id
-  destination_cidr_block  = "0.0.0.0/0"
-  gateway_id  = aws_internet_gateway.default.id
+resource "aws_route" "internet_access" {
+  route_table_id         = aws_vpc.default.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.default.id
 }
 
 # Create subrede
-resource  "aws_subnet"  "default" {
-  vpc_id  = aws_vpc.default.id
-  cidr_block = "10.0.1.0/24"
+resource "aws_subnet" "default" {
+  vpc_id                  = aws_vpc.default.id
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 }
 
 # Create Security Group - ELB
-resource  "aws_security_group"  "elb" {
-  name  = "terraform_example_elb"
+resource "aws_security_group" "elb" {
+  name        = "terraform_example_elb"
   description = "Used in the terraform"
-  vpc_id  = aws_vpc.default.id
-  
+  vpc_id      = aws_vpc.default.id
+
   # Http access from anywere
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
   # Outbound internet access.
-  egress  {
+  egress {
     from_port = 0
-    to_port = 0
+    to_port   = 0
     protocol  = "-1"
   }
 }
 
 # Create Security Group Default.
-resource  "aws_security_group"  "default" {
-  name  = "terraform_example"
+resource "aws_security_group" "default" {
+  name        = "terraform_example"
   description = "Used in the terraform"
-  vpc_id  = aws_vpc.default.id
+  vpc_id      = aws_vpc.default.id
 
   #SSH access from anywhere
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol  = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   # HTTP access from the VPC
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol  = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["10.0.0.0/16"]
   }
 }
 
 # Create ELB
-resource "aws_elb"  "web" {
-  name  = "terraform-example-elb"
+resource "aws_elb" "web" {
+  name               = "terraform-example-elb"
   availability_zones = ["sa-east-1a", "sa-east-1b", "sa-east-1c"]
 
-    
-  listener  {
-    instance_port = 8000
+
+  listener {
+    instance_port     = 8000
     instance_protocol = "http"
-    lb_port = 80
-    lb_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
   }
   /*listener {
     instance_port      = 8000
@@ -103,15 +103,15 @@ resource "aws_elb"  "web" {
     ssl_certificate_id = ""
   }*/
 
-    health_check {
-      healthy_threshold   = 2
-      unhealthy_threshold = 2
-      timeout             = 3
-      target              = "HTTP:8000/"
-      interval            = 30
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:8000/"
+    interval            = 30
 
-    
-  }  
+
+  }
   instances                   = [aws_instance.web.id]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
@@ -125,9 +125,9 @@ resource "aws_elb"  "web" {
 
 # Create Instancia EC2
 resource "aws_instance" "web" {
-    ami = "ami-054a31f1b3bf90920"
-    instance_type = "t2.micro"
-    
+  ami           = "ami-054a31f1b3bf90920"
+  instance_type = "t2.micro"
+
 }
 
 
