@@ -60,7 +60,7 @@ resource  "aws_security_group"  "elb" {
   }
 }
 
-# Create Security Group Default
+# Create Security Group Default.
 resource  "aws_security_group"  "default" {
   name  = "terraform_example"
   description = "Used in the terraform"
