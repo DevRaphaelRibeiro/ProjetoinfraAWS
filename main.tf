@@ -52,7 +52,7 @@ resource  "aws_security_group"  "elb" {
     protocol  = "tcp"
     cidr_blocks = ["0.0.0.0/0"]  
   }
-  # Outbound internet access
+  # Outbound internet access.
   egress  {
     from_port = 0
     to_port = 0
