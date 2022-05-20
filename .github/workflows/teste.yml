@@ -11,11 +11,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build PRD
-      run: aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem
-           aws s3 cp s3://s3-terraformbe/autoscaling-deploy.sh /tmp/autoscaling-deploy.sh
-           chmod 0400 /tmp/key-sp.pem
-           chmod 755 /tmp/autoscaling-deploy.sh
-           bash /tmp/autoscaling-deploy.sh asg-github develop /tmp/key-sp.pem 0 80 /var/www/html/dev-api
+      run: |
+            aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem
+            aws s3 cp s3://s3-terraformbe/autoscaling-deploy.sh /tmp/autoscaling-deploy.sh
+            chmod 0400 /tmp/key-sp.pem
+            chmod 755 /tmp/autoscaling-deploy.sh
+            bash /tmp/autoscaling-deploy.sh asg-github develop /tmp/key-sp.pem 0 80 /var/www/html/dev-api
              
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
