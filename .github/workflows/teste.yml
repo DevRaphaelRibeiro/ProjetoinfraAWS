@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
     - name: cpoia chave
-      run: aws s3 cp s3://s3-terraformbe/financeiro-develop.pem /tmp/financeiro-develop.pem
-             aws s3 cp s3://s3-terraformbe/autoscaling-deploy-dev.sh /tmp/autoscaling-deploy-dev.sh 
-             chmod 0400 /tmp/financeiro-develop.pem
-             chmod 755 /tmp/autoscaling-deploy-dev.sh
+      run: aws s3 cp s3://s3-terraformbe/financeiro-develop.pem /tmp/financeiro-develop.pem &&
+             aws s3 cp s3://s3-terraformbe/autoscaling-deploy-dev.sh /tmp/autoscaling-deploy-dev.sh &&
+             chmod 0400 /tmp/financeiro-develop.pem &&
+             chmod 755 /tmp/autoscaling-deploy-dev.sh &&
              bash /tmp/autoscaling-deploy-dev.sh Develop-financ-ASG develop /tmp/financeiro-develop.pem 0 80 /var/www/html/dev-api
     
     
