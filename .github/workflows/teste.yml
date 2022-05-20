@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest 
     steps:
+    - uses: actions/checkout@v2
     - name: cpoia chave
       run: aws s3 cp s3://s3-terraformbe/financeiro-develop.pem /tmp/financeiro-develop.pem &&
              aws s3 cp s3://s3-terraformbe/autoscaling-deploy-dev.sh /tmp/autoscaling-deploy-dev.sh &&
