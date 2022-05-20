@@ -7,7 +7,7 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
     - name: build PRD
