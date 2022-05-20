@@ -16,6 +16,11 @@ jobs:
              chmod 0400 /tmp/key-sp.pem &&
              chmod 755 /tmp/autoscaling-deploy.sh &&
              bash /tmp/autoscaling-deploy.sh Develop-financ-ASG develop /tmp/key-sp.pem 0 80 /var/www/html/dev-api
+             
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
     
     
     
