@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
-    - name: cpoia chave
+    - name: build PRD
       run: aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem &&
              aws s3 cp s3://s3-terraformbe/autoscaling-deploy.sh /tmp/autoscaling-deploy.sh &&
              chmod 0400 /tmp/key-sp.pem &&
