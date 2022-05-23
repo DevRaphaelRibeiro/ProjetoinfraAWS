@@ -9,21 +9,19 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
-    - name: build PRD
-      run: |
-           aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem 
-           ssh -o StrictHostKeyChecking=no ubuntu@18.231.165.220 "sudo mkdir -p /var/www/html
-           
+      - name: Checkout the files
+        uses: actions/checkout@v2
+     
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main    
            
              
-      env:
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          SOURCE: "./"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-          TARGET: "/home/ubuntu/SampleExpressApp"
+          TARGET: "/home/ubuntu/var"
     
     
          
