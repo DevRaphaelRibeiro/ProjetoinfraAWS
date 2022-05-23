@@ -17,10 +17,9 @@ jobs:
         
       - name: create ssh key
         run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" > ../private.key
-          sudo chmod 600 ../private.key
-          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem
+          chmod 0400 /tmp/key-sp.pem
+          ssh -o StrictHostKeyChecking=no ubuntu@${PUBLIC_IP} "sudo apt-get update"
         shell: bash
            
              
