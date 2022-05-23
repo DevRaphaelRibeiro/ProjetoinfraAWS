@@ -13,6 +13,8 @@ jobs:
     - name: build PRD
       run: |
            aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem 
+           ssh -o StrictHostKeyChecking=no ubuntu@18.231.165.220 "sudo mkdir -p /var/www/html
+           
            
              
       env:
