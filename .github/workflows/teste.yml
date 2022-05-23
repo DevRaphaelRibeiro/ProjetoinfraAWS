@@ -13,9 +13,11 @@ jobs:
     - name: build PRD
     
     
+    -  uses: easingthemes/ssh-deploy@v2.1.5
     - name: Deploy to my EC2 instance
-      uses: easingthemes/ssh-deploy@v2.1.5
-      
+      run: |
+           aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem 
+           
              
       env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
