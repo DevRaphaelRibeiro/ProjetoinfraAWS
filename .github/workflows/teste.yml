@@ -6,7 +6,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  deploy:
     runs-on: self-hosted
     steps:
       - name: Checkout the files
@@ -14,20 +14,14 @@ jobs:
         
         
       - name: deploy ec2
-        run: |
-          apk add openssh-client
-          eval $(ssh-agent -s)          
-          aws s3 cp s3://s3-terraformbe/key-sp.pem /tmp/key-sp.pem
-          chmod 0400 /tmp/key-sp.pem /root/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no ubuntu@${PUBLIC_IP} "sudo apt-get update"
-        shell: bash
+        uses: easingthemes/ssh-deploy@main
            
              
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: ${{ secrets.TARGET_DIR }}
           
     
     
