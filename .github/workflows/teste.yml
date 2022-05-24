@@ -9,12 +9,13 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout the files
-        uses: actions/checkout@v2   
+      - name: Checkout the code
+        uses: actions/checkout@v1   
         
         
       - name: deploy ec2
-        uses: easingthemes/ssh-deploy@main
+        uses: easingthemes/ssh-deploy@v2.1.5
+       
            
              
         env:
